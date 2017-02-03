@@ -1,0 +1,21 @@
+description "django-imager"
+
+start on (filesystem)
+stop on runlevel [016]
+
+respawn
+setuid nobody
+setgid nogroup
+chdir /home/ubuntu/django-imager/imagersite
+
+env SECRET_KEY='{{ secret_key }}'
+env DATABASE_NAME='{{ database_name }}'
+env DATABASE_USER='{{ database_user }}'
+env DATABASE_PASSWORD='{{ database_password }}'
+env DATABASE_HOST='{{ database_host }}'
+env DATABASE_PORT='{{ database_port }}'
+env AWS_HOST='{{ aws_host }}'
+env AWS_HOST_IP='{{ aws_host_ip }}'
+env EMAIL_PASSWORD='{{ email_password }}'
+
+exec /home/ubuntu/django-imager/ENV/bin/gunicorn -b :8000 imagersite.wsgi:application

@@ -1,0 +1,8 @@
+127.0.0.1 ansible_connection=local
+[remote-wsgi]
+54.202.239.113
+
+[remote-wsgi:vars]
+ansible_ssh_user=ubuntu
+ansible_ssh_private_key_file=~/.ssh/amos-key.pem
+server_dns=ec2-54-202-239-113.us-west-2.compute.amazonaws.com
