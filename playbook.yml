@@ -77,6 +77,8 @@
 
     - name: Restart nginx service
       service: name=nginx state=restarted
+      become: yes
+      become_method: sudo
 
     - name: Copy upstart script into /etc/init
       template: src=/home/x/codefellows/401/django-playbook/templates/upstart_config dest=/etc/init/django-imager.conf
