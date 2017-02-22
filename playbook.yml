@@ -3,6 +3,19 @@
   remote_user: ubuntu
   vars_files:
     - external_vars.yml
+  vars:
+    env:
+      SECRET_KEY: '{{secret_key }}'
+      DATABASE_NAME: '{{ database_name }}'
+      DATABASE_USER: "{{ database_user }}"
+      DATABASE_PASSWORD: "{{database_password }}"
+      DATABASE_HOST: "{{ database_host }}"
+      DATABASE_PORT: "{{ database_port }}"
+      AWS_HOST: "{{ aws_host }}"
+      AWS_HOST_IP: "{{ aws_host_ip }}"
+      EMAIL_PASSWORD: "{{ email_password }}"
+      GITHUB_APP_ID: "{{ github_id }}"
+      GITHUB_APP_SECRET: "{{ github_secret }}"
   tasks:
     - name: Update Ubuntu with all the lastest stuff
       apt: update_cache=yes
@@ -55,12 +68,21 @@
         - AWS_HOST={{ aws_host }}
         - AWS_HOST_IP={{ aws_host_ip }}
         - EMAIL_PASSWORD={{ email_password }}
+        - GITHUB_APP_ID={{ github_id }}
+        - GITHUB_APP_SECRET={{ github_secret }}
 
     - name: Install gunicorn to the virtualenv
       pip: virtualenv={{ environment_location }} name=gunicorn
 
     - name: Install the packages specified in requirements.pip in the Python 3 environment
       pip: virtualenv={{ environment_location }} requirements={{ app_root }}/requirements.pip
+
+    - name: Migrate Django models to database
+      django_manage:
+        command: migrate
+        app_path: "{{ app_root }}/imagersite"
+        virtualenv: "{{ environment_location }}"
+      environment: "{{ env }}"
 
     - name: Register the old default file
       stat: path=/etc/nginx/sites-available/default.old
