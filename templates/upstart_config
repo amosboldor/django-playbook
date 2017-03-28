@@ -17,5 +17,7 @@ env DATABASE_PORT='{{ database_port }}'
 env AWS_HOST='{{ aws_host }}'
 env AWS_HOST_IP='{{ aws_host_ip }}'
 env EMAIL_PASSWORD='{{ email_password }}'
+env GITHUB_APP_ID='{{ github_id }}'
+env GITHUB_APP_SECRET='{{ github_secret }}'
 
 exec /home/ubuntu/django-imager/ENV/bin/gunicorn -b :8000 imagersite.wsgi:application
